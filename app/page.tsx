@@ -14,7 +14,7 @@ export default function Home() {
   let [currentFile, setCurrentFile] = useState<FileDataProps>(fileData[0]);
 
   async function getAllData() {
-    const url = 'http://localhost:5000/file';
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/file`;
     const options: RequestInit = {
       method: 'GET',
       mode: "cors",
@@ -126,7 +126,7 @@ function LeftContainer({name, currentFile, onButtonClick, fileData, refreshData,
   }
 
   async function postNewFile(newFileData: FileDataProps){
-    const url = 'http://localhost:5000/file';
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/file`;
     const options: RequestInit = {
       method: 'POST',
       mode: "cors",
@@ -152,7 +152,7 @@ function LeftContainer({name, currentFile, onButtonClick, fileData, refreshData,
   }
 
   async function updateRootChildren(childID: number){
-    const url = 'http://localhost:5000/file/' + currentFile.treeID;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/file/` + currentFile.treeID;
     const options: RequestInit = {
       method: 'PATCH',
       mode: "cors",
@@ -212,7 +212,6 @@ type RightContainerProps = {
 
 
 function RightFolderContainer({ name, onButtonClick, currentFile, fileData } : RightContainerProps) {
-    const [search, setSearch] = useState('');
 
     const listFiles = currentFile.childrens.length ? 
     currentFile.childrens.map((value: number) => {
@@ -220,15 +219,12 @@ function RightFolderContainer({ name, onButtonClick, currentFile, fileData } : R
             fileData={{treeID: value, name: fileData[value].name, type: fileData[value].type, childrens: fileData[value].childrens, root: fileData[value].root}} 
             onButtonClick={onButtonClick} 
             />
-    }) 
-    : 
+    }) : 
     <div className="text-center text-lg text-gray-700"><p>No files in here</p></div>
-
-
     return (
         <div className="py-4 px-6">
           <div className="py-4">
-            <p className="font-bold text-2xl py-4 border-b">{name}:</p>
+            <p className="font-bold border-b text-2xl py-4">{name}: </p>
           
             {/* <div className="flex gap-x-4 pt-2 pb-4 px-2 border-b-2">
                 <button>
@@ -251,7 +247,7 @@ function RightFolderContainer({ name, onButtonClick, currentFile, fileData } : R
                   
                   <div>
                     <Image src="icons/search.svg" alt="search icon" height={25} width={25} className="inline-block mr-4"></Image>
-                    <input type="text" placeholder="Search" className="border px-2 py-2 rounded-lg" value={search} onChange={(e) => {setSearch(e.target.value)}}/>
+                    <input type="text" placeholder="Search" className="border px-2 py-2 rounded-lg" />
                   </div>
             </div>  */}
             
