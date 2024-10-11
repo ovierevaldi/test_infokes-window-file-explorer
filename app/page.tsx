@@ -29,7 +29,7 @@ export default function Home() {
   
       const data = await response.json();
       setFileData(data);
-
+      console.log(data)
       // Set the default current file is the Root
       setCurrentFile(data.find((element: FileDataProps) => element.root === -1));
 
@@ -70,7 +70,7 @@ export default function Home() {
    <>
     <main className="grid grid-cols-[0.8fr_4fr]">
       
-      <LeftContainer name="List Folders" currentFile={currentFile} onButtonClick={handleButtonClick} fileDataLength={fileData.length} refreshData={refreshData}/>
+      <LeftContainer name="List Folders" currentFile={currentFile} onButtonClick={handleButtonClick} fileData={fileData} refreshData={refreshData}/>
       {/* <RightFolderContainer name={currentFolder.name} fileDatas={currentFolder.children || []} onButtonClick={handleFileButtonClick}/> */}
     </main>
    </>
@@ -81,17 +81,17 @@ type LeftContainerProps = {
   name: string
   currentFile: FileDataProps
   onButtonClick: (id: number) => void;
-  fileDataLength: number;
+  fileData: FileDataProps[];
   refreshData: () => void;
 }
 
-function LeftContainer({name, currentFile, onButtonClick, fileDataLength, refreshData}: LeftContainerProps){
+function LeftContainer({name, currentFile, onButtonClick, fileData, refreshData}: LeftContainerProps){
   const [modalState, setModalState] = useState(false);
-  // const childrenData = currentFile.children.filter((element) => )
+ 
   
-  // const listFolderButton = currentFile.children.map((value : number) => 
-  //       <LeftFileButton key={value._id} id={value._id} label={value.name} onButtonClick={onButtonClick}></LeftFileButton>
-  // )
+  const listFolderButton = currentFile.childrens.map((value : number) => 
+        <LeftFileButton key={fileData[value].treeID} id={fileData[value].treeID} label={fileData[value].name} onButtonClick={onButtonClick}></LeftFileButton>
+  )
 
   function handleNewFileButton(state: boolean){
     setModalState(state)
@@ -100,7 +100,7 @@ function LeftContainer({name, currentFile, onButtonClick, fileDataLength, refres
   async function handleSubmitForm(name: string, type: string, event: React.FormEvent){
     event.preventDefault();
     
-    const newID = fileDataLength++;
+    const newID = fileData.length++;
 
     await postNewFile({
       treeID: newID,
@@ -160,8 +160,6 @@ function LeftContainer({name, currentFile, onButtonClick, fileDataLength, refres
       if(!response.ok)
         throw new Error(`Response Status: ${response.status}`)
 
-      alert('Success!')
-
     } catch (error) {
       if(error instanceof Error)
           console.log(error.message)
@@ -187,7 +185,7 @@ function LeftContainer({name, currentFile, onButtonClick, fileDataLength, refres
 
         <div className="">
           <p className="pb-2">{name}</p>
-          {/* {listFolderButton} */}
+          {listFolderButton}
         </div>
 
         {modalState && <NewFileModal closeModal={handleNewFileButton} handleSubmitForm={handleSubmitForm}></NewFileModal>}
