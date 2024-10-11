@@ -1,12 +1,13 @@
-export type FolderDataProps = {
-  id: number // unique, automatic
+export type FileDataProps = {
+  treeID: number // unique, automatic
   name: string
-  children?: FileDataProps[]
+  type: string
   root: number
+  childrens: number[]
 }
 
-export type FileDataProps = {
-  id: number
-  name: string
-  ext: string
-}
+
+// export type FileDataProps = {
+//   id: number
+//   name: string
+// }
