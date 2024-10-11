@@ -6,12 +6,11 @@ import MainTypeButton from "./components/MainTypeButton";
 import { useEffect, useState } from "react";
 import { FileDataProps } from "./lib/types";
 import NewFileModal from "./util_components/NewFileModal";
-import { tree } from "next/dist/build/templates/app-page";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [fileData, setFileData] = useState<FileDataProps[]>([]);
-  let [currentFile, setCurrentFile] = useState<FileDataProps>(fileData[0]);
+  const [currentFile, setCurrentFile] = useState<FileDataProps>(fileData[0]);
 
   async function getAllData() {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/file`;
@@ -45,7 +44,7 @@ export default function Home() {
 
   useEffect(() =>{
     getAllData();
-  },[])
+  })
 
   async function refreshData(){
     await getAllData();
